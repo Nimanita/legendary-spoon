@@ -30,3 +30,12 @@ __pycache__/
 .env.keys
 .env.local
 .env.*.local
+
+# ignore any file named .env anywhere
+**/.env
+
+# ignore other env-like files too
+**/*.env
+
+backend/**/.env
+backend/**/*.env
