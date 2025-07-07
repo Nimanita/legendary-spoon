@@ -1,0 +1,32 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*.so
+
+# Django migrations
+*/migrations/*.py
+*/migrations/*.pyc
+
+# Environment variables
+.env
+.env.*
+
+# Database files
+*.sqlite3
+
+# VSCode, PyCharm, etc.
+.vscode/
+.idea/
+
+# Static/assets build
+/staticfiles/
+/media/
+
+# Supabase
+.branches
+.temp
+
+# dotenvx
+.env.keys
+.env.local
+.env.*.local
