@@ -14,7 +14,7 @@ class LMStudioClient:
         self.temperature = getattr(settings, 'AI_TEMPERATURE', TEMPERATURE)
         self.model_name = getattr(settings, 'AI_MODEL_NAME', MODEL_NAME)
         # Increased timeout for slower models
-        self.timeout = getattr(settings, 'LM_STUDIO_TIMEOUT', 120)  # 2 minutes default
+        self.timeout = getattr(settings, 'LM_STUDIO_TIMEOUT', 300)  # 2 minutes default
     
     def _make_request(self, endpoint: str, data: Dict[str, Any]) -> Dict[str, Any]:
         """Make HTTP request to LM Studio API"""

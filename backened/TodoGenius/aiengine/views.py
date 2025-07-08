@@ -51,26 +51,13 @@ def enhance_task(request):
                 'data': enhancement_result['data']
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        # Validate output
-        output_serializer = TaskEnhancementOutputSerializer(data=enhancement_result['data'])
-        if not output_serializer.is_valid():
-            print(f"Output validation errors: {output_serializer.errors}")
-            # Return the data anyway, but with a warning
-            return Response({
+        return Response({
                 'success': True,
                 'message': 'Task enhanced successfully (with validation warnings)',
-                'data': enhancement_result['data'],
-                'warnings': output_serializer.errors
+                'data': enhancement_result['data']
+               
             }, status=status.HTTP_200_OK)
         
-        return Response({
-            'success': True,
-            'message': 'Task enhanced successfully',
-            'data': output_serializer.validated_data,
-            'meta': {
-                           }
-        }, status=status.HTTP_200_OK)
-    
     except Exception as e:
         print(f"Error in enhance_task view: {str(e)}")
         return Response({

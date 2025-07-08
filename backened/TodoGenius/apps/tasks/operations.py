@@ -41,7 +41,10 @@ class TaskOperations:
                     queryset = queryset.filter(priority_score__lte=float(max_priority))
                 except ValueError:
                     print(f"Invalid max_priority value: {max_priority}")
-            
+                    
+            categoryname = request.query_params.get('category_name')
+            if categoryname:
+                queryset = queryset.filter(category__name__iexact=categoryname)
             # Filter by deadline
             has_deadline = request.query_params.get('has_deadline')
             if has_deadline is not None:

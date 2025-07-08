@@ -28,7 +28,7 @@ class TaskEnhancementOutputSerializer(serializers.Serializer):
     descriptions = serializers.CharField(max_length=900)
     category = CategorySerializer(required=False)
     priority_score = serializers.FloatField(min_value=0.0, max_value=1.0)
-    deadline = serializers.IntegerField(allow_null=True, required=False)
+    deadline = serializers.DateTimeField(allow_null=True, required=False)
     timeframe_days = serializers.IntegerField(min_value=1, required=False)
     confidence = serializers.FloatField(min_value=0.0, max_value=1.0)
     reasoning = serializers.CharField(max_length=500, required=False)

@@ -39,3 +39,59 @@ __pycache__/
 
 backend/**/.env
 backend/**/*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.egg-info/
+*.migrations/
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django specific
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+.env
+
+# React / Node
+node_modules/
+build/
+.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/frontend/.env
+/frontend/node_modules
+/frontend/build
+/frontend/.next
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# Git
+*.swp
+*~
+
+node_modules/
+**/node_modules/
+
+

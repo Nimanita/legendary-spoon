@@ -39,23 +39,33 @@ class TaskProcessor:
             
             # Call AI model once with comprehensive prompt
             response = self.client.generate_completion(prompt=prompt)
-            print("response" , response)
-            # Parse and validate AI response
-            enhanced_data = self.formatter.parse_ai_response(response)
+            print("AI Response received:", response)
+            
+            # Parse and validate AI response with original task name
+            enhanced_data = self.formatter.parse_ai_response(response, task_name)
             
             # Process category with color
             enhanced_data = self._process_category_with_color(enhanced_data, existing_categories)
             
             # Sanitize the response
             sanitized_data = self.formatter.sanitize_ai_response(enhanced_data)
-            # Add the original task name if title is missing
-            if 'title' not in sanitized_data or not sanitized_data['title']:
+            
+            # Ensure title is never empty
+            if 'title' not in sanitized_data or not sanitized_data['title'] or sanitized_data['title'].strip() == '':
                 sanitized_data['title'] = task_name
             
-            # Calculate suggested deadline if timeframe is provided
+            # Ensure deadline is in proper format
+            if 'deadline' not in sanitized_data:
+                sanitized_data['deadline'] = DataFormatter.days_to_datetime(3)
+            
+            # Calculate suggested deadline from timeframe_days if present
             if 'timeframe_days' in sanitized_data:
-                suggested_deadline = timezone.now() + timedelta(days=sanitized_data['timeframe_days'])
-                sanitized_data['suggested_deadline'] = suggested_deadline.isoformat()
+                try:
+                    days = int(sanitized_data['timeframe_days'])
+                    suggested_deadline = timezone.now() + timedelta(days=days)
+                    sanitized_data['suggested_deadline'] = suggested_deadline.strftime('%Y-%m-%dT%H:%M:%S')
+                except (ValueError, TypeError):
+                    pass
             
             return {
                 'success': True,
@@ -65,19 +75,18 @@ class TaskProcessor:
         except Exception as e:
             print(f"Error enhancing task: {str(e)}")
             print(traceback.format_exc())
+            
+            # Return enhanced fallback with creative description
             return {
                 'success': False,
                 'data': {
                     'title': task_name,
-                    'descriptions': [
-                        f"Complete the task: {task_name}",
-                        f"Work on {task_name} as planned",
-                        f"Focus on completing {task_name}"
-                    ],
+                    'descriptions': DataFormatter.generate_creative_description(task_name),
                     'category': {'name': 'general', 'color': '#3B82F6', 'is_new': True},
                     'priority_score': 0.5,
+                    'deadline': DataFormatter.days_to_datetime(3),
                     'confidence': 0.0,
-                    'reasoning': 'AI enhancement failed, using defaults'
+                    'reasoning': 'AI enhancement failed, using intelligent fallback with creative description'
                 }
             }
 
