@@ -98,12 +98,14 @@ TodoGenius combines traditional task management with cutting-edge AI technology 
 - **Authentication**: Django's built-in authentication
 - **API Documentation**: OpenAPI/Swagger
 
-### Frontend
-- **Framework**: React.js 13+ with App Router
-- **Styling**: Tailwind CSS
-- **State Management**: React Hooks (useState, useEffect)
-- **HTTP Client**: Axios with interceptors
-- **UI Components**: Custom components with Tailwind
+### Frontend (React.js)
+- **Framework**: React.js 18+ with Create React App
+- **Styling**: Tailwind CSS for utility-first styling
+- **State Management**: React Hooks (useState, useEffect, useContext)
+- **HTTP Client**: Axios with interceptors for API communication
+- **Routing**: React Router for Single Page Application navigation
+- **UI Components**: Custom components organized by feature
+- **Performance**: Custom hooks for debouncing and memoization
 
 ### AI & ML
 - **Local LLM**: LM Studio with Llama/Mistral models
@@ -167,32 +169,100 @@ TodoGenius combines traditional task management with cutting-edge AI technology 
 │       └── manage.py                  # Django management
 │
 ├── frontend/
-│   ├── src/
-│   │   ├── app/                      # Next.js app directory
-│   │   │   ├── layout.tsx            # Root layout
-│   │   │   ├── page.tsx              # Home page
-│   │   │   ├── tasks/                # Task pages
-│   │   │   └── context/              # Context pages
-│   │   │
-│   │   ├── components/               # Reusable components
-│   │   │   ├── TaskList.tsx          # Task list component
-│   │   │   ├── TaskForm.tsx          # Task creation form
-│   │   │   ├── AIEnhancementModal.tsx # AI suggestions modal
-│   │   │   └── ContextInput.tsx      # Context input component
-│   │   │
-│   │   ├── lib/                      # Utility functions
-│   │   │   ├── api.ts                # API client
-│   │   │   ├── types.ts              # TypeScript types
-│   │   │   └── utils.ts              # Helper functions
-│   │   │
-│   │   └── styles/                   # Styling
-│   │       └── globals.css           # Global styles
-│   │
-│   ├── package.json                  # Node.js dependencies
-│   └── tailwind.config.js            # Tailwind configuration
+│   └── todogenius/                   # React application
+│       ├── public/                   # Static assets
+│       │   ├── index.html            # Main HTML template
+│       │   ├── favicon.ico           # App icon
+│       │   ├── logo192.png           # App logo (small)
+│       │   ├── logo512.png           # App logo (large)
+│       │   ├── manifest.json         # PWA manifest
+│       │   └── robots.txt            # SEO robots file
+│       │
+│       ├── src/                      # Source code
+│       │   ├── App.jsx               # Main App component
+│       │   ├── App.css               # App-specific styles
+│       │   ├── App.test.js           # App tests
+│       │   ├── index.js              # React entry point
+│       │   ├── index.css             # Global styles
+│       │   ├── logo.svg              # React logo
+│       │   ├── setupTests.js         # Test setup
+│       │   ├── reportWebVitals.js    # Performance reporting
+│       │   │
+│       │   ├── components/           # React components
+│       │   │   ├── common/           # Shared components
+│       │   │   │   ├── ErrorMessage.jsx      # Error display
+│       │   │   │   ├── Header.jsx            # App header
+│       │   │   │   ├── LoadingSpinner.jsx    # Loading indicator
+│       │   │   │   └── SuccessMessage.jsx    # Success feedback
+│       │   │   │
+│       │   │   ├── context/          # Context-related components
+│       │   │   │   ├── ContextCard.jsx       # Context item display
+│       │   │   │   ├── ContextHistory.jsx    # Context history view
+│       │   │   │   └── ContextInput.jsx      # Context input form
+│       │   │   │
+│       │   │   └── task/             # Task-related components
+│       │   │       ├── AIEnhancementModal.jsx # AI suggestions modal
+│       │   │       ├── CategoryFilter.jsx    # Category filtering
+│       │   │       ├── PriorityIndicator.jsx # Priority visualization
+│       │   │       ├── TaskCard.jsx          # Individual task display
+│       │   │       ├── TaskFilter.jsx        # Task filtering controls
+│       │   │       ├── TaskForm.jsx          # Task creation form
+│       │   │       └── TaskList.jsx          # Task list container
+│       │   │
+│       │   ├── hooks/                # Custom React hooks
+│       │   │   ├── useContext.js     # Context management hook
+│       │   │   ├── useDebounce.js    # Debouncing utility hook
+│       │   │   └── useTasks.js       # Task management hook
+│       │   │
+│       │   ├── pages/                # Page components
+│       │   │   ├── ContextPage.jsx   # Context management page
+│       │   │   ├── NotFound.jsx      # 404 error page
+│       │   │   └── TaskManagement.jsx # Main task management page
+│       │   │
+│       │   ├── services/             # API and external services
+│       │   │   └── api.js            # API client and endpoints
+│       │   │
+│       │   ├── styles/               # Additional styling
+│       │   │   └── globals.css       # Global CSS styles
+│       │   │
+│       │   └── utils/                # Utility functions
+│       │       ├── constants.js      # App constants
+│       │       └── taskUtils.js      # Task-related utilities
+│       │
+│       ├── package.json              # Node.js dependencies
+│       ├── package-lock.json         # Lock file for dependencies
+│       ├── postcss.config.js         # PostCSS configuration
+│       └── tailwind.config.js        # Tailwind CSS configuration
 │
-├── README.md                         # This file
+├── README.md                         # Project documentation
 └── .gitignore                        # Git ignore rules
+```
+
+---
+
+## 🔧 React Frontend Architecture
+
+### Component Hierarchy
+
+```
+App.jsx
+├── Header.jsx (common)
+├── TaskManagement.jsx (page)
+│   ├── TaskForm.jsx (task)
+│   │   └── AIEnhancementModal.jsx (task)
+│   ├── TaskFilter.jsx (task)
+│   │   └── CategoryFilter.jsx (task)
+│   └── TaskList.jsx (task)
+│       └── TaskCard.jsx (task)
+│           └── PriorityIndicator.jsx (task)
+├── ContextPage.jsx (page)
+│   ├── ContextInput.jsx (context)
+│   └── ContextHistory.jsx (context)
+│       └── ContextCard.jsx (context)
+├── LoadingSpinner.jsx (common)
+├── SuccessMessage.jsx (common)
+├── ErrorMessage.jsx (common)
+└── NotFound.jsx (page)
 ```
 
 ---
@@ -310,16 +380,10 @@ cd ../../frontend
 npm install
 ```
 
-3. **Configure environment variables**
-```bash
-# Create .env.local file
-NEXT_PUBLIC_API_URL=http://localhost:8000/api
-NEXT_PUBLIC_APP_NAME=TodoGenius
-```
 
-4. **Start development server**
+3. **Start development server**
 ```bash
-npm run dev
+npm start
 ```
 
 ### LM Studio Setup
@@ -332,7 +396,7 @@ npm run dev
 2. **Download a model**
    - Open LM Studio
    - Go to the "Discover" tab
-   - Search for and download a model (e.g., "Llama 2 7B Chat")
+   - Search for and download a model (e.g., "qwen2.5-coder-1.5b-instruct-q4")
 
 3. **Start the local server**
    - Go to the "Local Server" tab
