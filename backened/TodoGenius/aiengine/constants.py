@@ -1,7 +1,7 @@
 LM_STUDIO_BASE_URL = "http://localhost:1234/v1"
 MAX_TOKENS = 400
 TEMPERATURE = 0.7
-MODEL_NAME = "qwen2.5-coder-1.5b-instruct"
+MODEL_NAME = "Mistral-7B-Instruct-v0.3-Q4_K_M.gguf"
 
 # Priority Score Ranges
 PRIORITY_RANGES = {

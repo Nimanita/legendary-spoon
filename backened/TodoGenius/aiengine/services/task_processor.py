@@ -46,30 +46,13 @@ class TaskProcessor:
             
             # Process category with color
             enhanced_data = self._process_category_with_color(enhanced_data, existing_categories)
-            
+            print("enhanced data" , enhanced_data)
             # Sanitize the response
-            sanitized_data = self.formatter.sanitize_ai_response(enhanced_data)
-            
-            # Ensure title is never empty
-            if 'title' not in sanitized_data or not sanitized_data['title'] or sanitized_data['title'].strip() == '':
-                sanitized_data['title'] = task_name
-            
-            # Ensure deadline is in proper format
-            if 'deadline' not in sanitized_data:
-                sanitized_data['deadline'] = DataFormatter.days_to_datetime(3)
-            
-            # Calculate suggested deadline from timeframe_days if present
-            if 'timeframe_days' in sanitized_data:
-                try:
-                    days = int(sanitized_data['timeframe_days'])
-                    suggested_deadline = timezone.now() + timedelta(days=days)
-                    sanitized_data['suggested_deadline'] = suggested_deadline.strftime('%Y-%m-%dT%H:%M:%S')
-                except (ValueError, TypeError):
-                    pass
+            #sanitized_data = self.formatter.sanitize_ai_response(enhanced_data)
             
             return {
                 'success': True,
-                'data': sanitized_data
+                'data': enhanced_data
             }
             
         except Exception as e:

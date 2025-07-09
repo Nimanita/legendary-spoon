@@ -47,59 +47,7 @@ class DataFormatter:
         
         return True
     
-    @staticmethod
-    def sanitize_ai_response(response: Dict) -> Dict:
-        """Sanitize AI response for safe processing"""
-        sanitized = {}
-        
-        # Define safe fields and their types
-        safe_fields = {
-            'priority_score': float,
-            'confidence': float,
-            'reasoning': str,
-            'deadline': int,  # Changed to int for days
-            'timeframe_days': int,
-            'enhanced_description': str,
-            'category': dict,
-            'analysis': str,
-            'urgency_indicators': list,
-            'key_insights': list,
-            'suggested_actions': list,
-            'alternative_categories': list,
-            'factors_considered': list,
-            'suggested_tasks': list,
-            'descriptions': str,
-            'title': str,
-        }
-        
-        for field, field_type in safe_fields.items():
-            if field in response:
-                try:
-                    if field_type == float:
-                        value = float(response[field])
-                        # Clamp values between 0 and 1 for scores
-                        if field in ['priority_score', 'confidence']:
-                            value = max(0.0, min(1.0, value))
-                        sanitized[field] = value
-                    elif field_type == int:
-                        sanitized[field] = int(response[field])
-                    elif field_type == str:
-                        sanitized[field] = str(response[field])[:1000]  # Limit length
-                    elif field_type == list:
-                        if isinstance(response[field], list):
-                            sanitized[field] = response[field][:10]  # Limit list length
-                        else:
-                            sanitized[field] = []
-                    elif field_type == dict:
-                        if isinstance(response[field], dict):
-                            sanitized[field] = response[field]
-                        else:
-                            sanitized[field] = {}
-                except (ValueError, TypeError):
-                    # Skip invalid fields
-                    continue
-        
-        return sanitized
+   
     
     @staticmethod
     def days_to_datetime(days: int) -> str:
